@@ -1,0 +1,294 @@
+body{
+	margin: 0;
+	background-image:url(../img/body-background.jpg);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+li{
+	list-style-type:none; /* remove the dot from all the li*/
+}
+
+.layout-wrap{
+	max-width: 1200px;
+	min-width: 600px;
+	margin: 0 auto;
+}
+
+/*  HEADER */
+
+header{
+	height: 60px;
+	background-color: black;
+}
+
+header img{
+	padding-top: 15px;
+	padding-left: 30px; /*NOT RESPONSIVE!!*/
+}
+
+.search-box{
+	float: right;
+	display: inline-block;
+	padding-top: 20px;
+	padding-right: 20px; /*NOT RESPONSIVE!!*/
+}
+
+/*  BODY */
+
+.page-body{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	height: 100%;
+	background-color: rgba(106, 111,112,0.5);
+}
+
+/* notifications bar */
+.notifications{
+	background-color: #EBEBEB;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.notifications p{
+	padding: 5px;
+	margin: 0;
+}
+
+/* nac-section */
+
+nav{
+	width: 95%;
+	margin: 0 auto;
+	padding-top: 20px;
+}
+
+.nav-section:nth-child(1) {
+    background-image:url(../img/icons/action-report-new.png);
+}
+.nav-section:nth-child(2) {
+    background-image:url(../img/icons/action-report-top.png);
+}
+.nav-section:nth-child(3) {
+    background-image:url(../img/icons/actions-help.png);
+}
+
+.nav-section{
+	display: inline-block;
+	width: 30%;
+	height: 120px;
+	background-color: black;
+	background-size: 35%;
+	background-repeat: no-repeat;
+    background-position: 50% 50px; 
+    vertical-align: top;
+}
+
+.nav-section:not(:nth-child(3)){
+	margin-right: 4%;
+}
+
+.nav-section > p{
+	width: 50%;
+	margin: 0 auto;
+	color: white;
+	padding-top: 10px;
+	height: 70px;
+}
+
+.menu{
+	height: 30px;
+
+	background-color: #EBEBEB;
+}
+
+.menu-caption{
+	height: 100%;
+	width: 90%;
+	margin: 0 auto;
+	color: black;
+}
+
+/*drop down menues */
+.action-list{
+	display: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.nav-section:hover .action-list{
+	display: block;
+	cursor: pointer;
+}
+
+.nav-section:hover{
+	background-color: #44424D;
+}
+
+.action-list li{
+	background-color: white;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.action-list a{
+	text-decoration: none;
+	color: black;
+}
+
+/* TABS */
+.tabs{
+	width: 95%;
+	margin: 0 auto;
+}
+
+.tabs > ul{
+	padding-left: 0;
+	margin-bottom: 0;
+}
+
+.tabs > ul > li {
+	display: inline-block;
+	background-color: #858D8F;
+	width: 20%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	text-align: center;
+	color: white;
+}
+.tabs > ul > li:not(:nth-child(4)){
+	margin-right: 5%;
+}
+
+.tabs > ul > .active{
+	background-color: #DFE9EB;
+	color: black;
+}
+
+.tabs > div{
+	width: 100%;
+	background-color: #DFE9EB;
+}
+
+/* the nav bar in the tab*/
+#tab-actions{
+	display: block;
+	height: 80px;
+	width: 95%;
+	margin: 0 auto;
+}
+
+#tab-actions select{
+	width: 20%;
+	height: 25px;
+	margin-top: 30px;
+}
+
+#tab-actions img{
+	display: inline-block;
+  	float: right;
+  	margin-left: 3%;
+  	margin-top: 24px;
+  	margin-bottom: 0;
+  	padding-bottom: 15px;
+  	padding-top: 15px;
+  	padding-left: 10px;
+  	padding-right: 10px;
+}
+
+/* the iframe*/
+iframe{
+	display: block;
+	width: 98%;
+	margin: 0 auto;
+	height: 800px;
+}
+
+/* SETTINGS */
+.settings{
+	width: 98%;
+	height: 220px;
+	margin: 0 auto;
+	background-color: white;
+	padding-top: 10px;
+}
+
+.settings ul{
+	padding: 0;
+	margin: 0;
+}
+
+.settings li{
+	width: 95%;
+	margin: 0 auto;
+	background-color: #C5C9C9;
+	padding-top: 1px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.settings li p{
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.settings li p:nth-child(1){
+	width: 10%;
+	margin-left: 2%;
+}
+.settings li input{
+	width: 30%;
+	margin-right: 5%;
+	height: 90%;
+}
+
+#settingsBtn.active{
+	background-color: white;
+}
+
+#saveBtn{
+	display: inline-block;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-right: 30px;
+	float: right;
+	background-color: black;
+	color: white;
+}
+
+#saveBtn:disabled{
+	background-color: gray;
+}
+
+.alertHighlight {
+	border: 1px solid red;
+	background-color: rgb(249, 232, 232);	
+}
+
+.alertHighlight:focus {
+	border-color: red;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px red !important;
+}
+
+#saveBtn:hover, #settingsBtn:hover, #externalBtn:hover, .tabs > ul >li:hover, #cancelBtn:hover{
+	cursor: pointer;
+}
+
+#cancelSaveSection{
+	display:block;
+}
+
+#cancelBtn{
+	float: right;
+	margin-top: 10px;
+	margin-right: 50px;
+	display: inline-block;
+	text-decoration: underline;
+	color: black;
+}
