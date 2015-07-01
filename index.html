@@ -92,8 +92,10 @@
 					<select>
 					<!-- Append "option"s with js from localStorage-->
 					</select>
-					<img id="settingsBtn" src="img/Settings.png">
-					<img id="externalBtn" src="img/External.png">
+					<form>
+						<input type="image" id="externalBtn" src="img/External.png" alt="Open in another tab">
+						<input type="image" id="settingsBtn" src="img/Settings.png" alt="Settings">
+					</form>
 				</div>
 				<form class="settings">
 				<ul>
@@ -114,7 +116,7 @@
 					</li>
 				</ul>
 				<div id="cancelSaveSection">
-					<input id="saveBtn" type="button" value="Save">
+					<input id="saveBtn" type="submit" value="Save">
 					<input id="cancelBtn" type="button" value="Cancel">
 				</div>
 				</form>

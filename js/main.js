@@ -1,9 +1,10 @@
 $(document).ready(function(){
+	console.log('AvivTest reloaded');
 	var openTab = localStorage.getItem('openTab');
-	if(openTab === null)
+	if(openTab ==null)
 		openTab = 1;
 	var tabSites = JSON.parse(localStorage.getItem('tabSites'));
-	if(tabSites === null){
+	if(tabSites == null){
 		tabSites = ['[]','','[]',''];	//JSONs array
 		localStorage.setItem('tabSites', JSON.stringify(tabSites));
 	}
@@ -50,7 +51,7 @@ $(document).ready(function(){
 	}
 
 	function changeTabFucn(tab){
-		console.log('chacgeTab '+tab);
+		console.log('AvivTest change to tab '+tab);
 		$('.tabs > ul li').removeClass('active');
 		$('.tabs > ul li:nth-child('+tab+')').addClass('active');
 		openTab = tab;
@@ -68,7 +69,7 @@ $(document).ready(function(){
 				$('.settings li:nth-child(1) input[name="SiteName"]').focus();
 			}
 			else{
-				$('iframe').attr('src', currentTabsSite[0].siteURL);
+				$('iframe').attr('src', fixUrl(currentTabsSite[0].siteURL));
 				isSettingsOpen = false;
 				$('#settingsBtn').removeClass('active');
 				$('.settings').hide();
@@ -103,7 +104,7 @@ $(document).ready(function(){
 		else{
 			currentTabsSite = tabSites[openTab-1];
 			$('iframe').show();
-			$('iframe').attr('src',currentTabsSite);
+			$('iframe').attr('src', fixUrl(currentTabsSite));
 			$('.settings').hide();
 			$('#settingsBtn').hide();
 			$('select').hide();
@@ -112,10 +113,26 @@ $(document).ready(function(){
 		}
 	}
 
-	function validateURL(textval) {
+	function validateURL(textval) 
+	{
       var urlregex = new RegExp(
             "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
+      if(urlregex.test(textval))
+      	return true;
+
+      //miss "http://"
+      urlregex = new RegExp(
+            "^([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
       return urlregex.test(textval);
+    }
+
+    function fixUrl(url)
+    //get a valid url, but maybe without "http://" prefix. check if miss and if deos, add it
+    {
+    	if(!new RegExp(
+            "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$").test(url))
+      		return "http://"+url;
+      	return url;
     }
 
     function save(){
@@ -135,11 +152,11 @@ $(document).ready(function(){
 
 		saveTabSites();	//save the current tab sites to the local storage
 
-		cancel();
+		return cancel();
 	}
 
 	function cancel(){
-		console.log('cancel');
+		console.log('AvivTest cancel');
 		if(currentTabsSite.length == 0){
 			$('iframe').hide();
 			$('#externalBtn').hide();
@@ -148,7 +165,7 @@ $(document).ready(function(){
 		else{
 			isSettingsOpen = false;
 			$('iframe').show();
-			$('iframe').attr('src', currentTabsSite[0].siteURL);
+			$('iframe').attr('src', fixUrl(currentTabsSite[0].siteURL));
 			$('.settings').hide();
 			$('#settingsBtn').show();
 			$('#externalBtn').show();
@@ -169,6 +186,9 @@ $(document).ready(function(){
 			$('.settings li:nth-child('+(i+1)+') input[name="SiteName"]').val(siteName);
 			$('.settings li:nth-child('+(i+1)+') input[name="SiteUrl"]').val(siteURL);
 		}
+
+		//returning false so the page won't reload (image input acts like a submit)
+		return false;
 	}
 
     changeTabFucn(openTab);
@@ -180,7 +200,9 @@ $(document).ready(function(){
 		if(isSettingsOpen){
     		if(event.which == 13)//enter
 			{
-				save();
+				if(!$('#saveBtn').is(':disabled')){
+					save();
+				}
 				return;
 			}
 			if(event.which == 27)//Esc
@@ -228,15 +250,15 @@ $(document).ready(function(){
 	$('.tabs > ul li:nth-child(3)').click(function(){changeTabFucn(3)});
 	$('.tabs > ul li:nth-child(4)').click(function(){changeTabFucn(4)});	
 
-	$("#saveBtn").click(function(){save();});
-	$("#cancelBtn").click(function(){cancel();});
+	$("#saveBtn").click(function(){return save();});
+	$("#cancelBtn").click(function(){return cancel();});
 
 	$("option:selected").each(function(){
-		$("iframe").attr('src',$(this).attr('value'));
+		$("iframe").attr('src',fixUrl($(this).attr('value')));
 	})
 
 	$("select").change(function(){
-		$("iframe").attr('src',$("option:selected").attr('value'));
+		$("iframe").attr('src',fixUrl($("option:selected").attr('value')));
 	});
 
 	//open in a new tab
@@ -262,6 +284,9 @@ $(document).ready(function(){
 			$('.settings li:nth-child(1) input[name="SiteName"]').focus();
 			isSettingsOpen = true;			
 		}
+
+		//returning false so the page won't reload (image input acts like a submit)
+		return false;
 	});
 
 	//the search form
@@ -276,7 +301,7 @@ $(document).ready(function(){
 				changeTabFucn(1);
 				$('#tab-actions > select > option:nth-child('+(i+1)+')').prop('selected', true);
 				console.log('src: '+tab1[i].SiteURL);
-				$('iframe').attr('src', tab1[i].siteURL);
+				$('iframe').attr('src', fixUrl(tab1[i].siteURL));
 				return;
 			}
 		}
@@ -287,7 +312,7 @@ $(document).ready(function(){
 			if (tab2[i].siteName.toLowerCase().indexOf(str) >= 0){
 				changeTabFucn(3);
 				$('#tab-actions > select > option:nth-child('+(i+1)+')').prop('selected', true);
-				$('iframe').attr('src', tab2[i].siteURL);
+				$('iframe').attr('src', fixUrl(tab2[i].siteURL));
 				return;
 			}
 		}

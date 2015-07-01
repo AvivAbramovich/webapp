@@ -188,16 +188,18 @@ nav{
 	margin-top: 30px;
 }
 
-#tab-actions img{
+#tab-actions form{
 	display: inline-block;
-  	float: right;
-  	margin-left: 3%;
-  	margin-top: 24px;
-  	margin-bottom: 0;
-  	padding-bottom: 15px;
-  	padding-top: 15px;
-  	padding-left: 10px;
+	float: right;
+	padding-top: 30px;
+}
+
+#tab-actions input{
+  	margin-left: 30px;
+  	padding-top: 10px;
   	padding-right: 10px;
+  	padding-left: 10px;
+  	padding-bottom: 15px;
 }
 
 /* the iframe*/
