@@ -113,15 +113,21 @@ nav{
 
 /*drop down menues */
 .action-list{
-	display: none;
+	/*display: none;*/
 	margin: 0;
 	padding: 0;
 	position: relative;
+	transition: opacity 0.3s ease-out;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
 }
 
 .nav-section:hover .action-list{
-	display: block;
+	/*display: block; Didn't works with transitions*/
 	cursor: pointer;
+	opacity: 1;
+	height: auto;
 }
 
 .nav-section:hover{
@@ -133,6 +139,10 @@ nav{
 	padding-left: 20px;
 	padding-top: 5px;
 	padding-bottom: 5px;
+}
+
+.action-list li:hover{
+	background-color: #C7E2ED;
 }
 
 .action-list a{
@@ -211,7 +221,7 @@ iframe{
 }
 
 /* SETTINGS */
-.settings{
+#settings{
 	width: 98%;
 	height: 220px;
 	margin: 0 auto;
@@ -219,40 +229,43 @@ iframe{
 	padding-top: 10px;
 }
 
-.settings ul{
+#settings ul{
 	padding: 0;
 	margin: 0;
 }
 
-.settings li{
+#settings li{
 	width: 95%;
 	margin: 0 auto;
+	padding: 0 auto;
 	background-color: #C5C9C9;
 	padding-top: 1px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
 
-.settings li p{
+#settings li p, #settings label{
 	display: inline-block;
 	margin-right: 10px;
 }
 
-.settings li p:nth-child(1){
+#settings li p:nth-child(1){
 	width: 10%;
 	margin-left: 2%;
 }
-.settings li input{
+#settings li input{
 	width: 30%;
-	margin-right: 5%;
-	height: 90%;
+	margin-right: 2%;
+	height: 20px;
 }
 
-#settingsBtn.active{
+#settings-button.active{
 	background-color: white;
 }
 
-#saveBtn{
+/* the Settings Save button*/
+
+#save-button{
 	display: inline-block;
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -264,9 +277,26 @@ iframe{
 	color: white;
 }
 
-#saveBtn:disabled{
+#save-button:disabled{
 	background-color: gray;
 }
+
+/*the Settings cancel button*/
+
+#cancelSaveSection{
+	display:block;
+}
+
+#cancel-button{
+	float: right;
+	margin-top: 10px;
+	margin-right: 50px;
+	display: inline-block;
+	text-decoration: underline;
+	color: black;
+}
+
+/* Invalid inputs */
 
 .alertHighlight {
 	border: 1px solid red;
@@ -278,19 +308,8 @@ iframe{
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px red !important;
 }
 
-#saveBtn:hover, #settingsBtn:hover, #externalBtn:hover, .tabs > ul >li:hover, #cancelBtn:hover{
+/* cursor is hand when hover over any button*/
+
+#save-button:hover, #settingsBtn:hover, #externalBtn:hover, .tabs > ul >li:hover, #cancel-button:hover{
 	cursor: pointer;
-}
-
-#cancelSaveSection{
-	display:block;
-}
-
-#cancelBtn{
-	float: right;
-	margin-top: 10px;
-	margin-right: 50px;
-	display: inline-block;
-	text-decoration: underline;
-	color: black;
 }
