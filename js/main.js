@@ -5,10 +5,12 @@ $(document).ready(function(){
 	var tabSites = JSON.parse(localStorage.getItem('tabSites'));
 	if(tabSites == null){
 		tabSites = ['[]','','[]',''];	//JSONs array
-		localStorage.setItem('tabSites', JSON.stringify(lastTabSites));
+		localStorage.setItem('tabSites', JSON.stringify(tabSites));
 	}
 
 	//Properties
+
+	var currentTabsSite;	//the site(s) of the current open tab
 
 	var iframe = $('iframe');	//the iframe
 
@@ -19,10 +21,11 @@ $(document).ready(function(){
 		cancel : $('#cancel-button')
 	};
 
+	var settingsFormInputs;	//array of objects that hold the jquery selectors for the input fields in the settings form
+
 	var sitesSelect = $('select');
 	var searchBox = $('.search-box');
 	var settingsSection = $('#settings');
-	var firstInput = $('#settings li:nth-child(1) input[name="SiteName"]');	//always focus in the beginning of settings
 
 	var isSettingsOpen = false;
 
@@ -39,7 +42,6 @@ $(document).ready(function(){
 		const PUBLIC_FOLDERS = 4;
 
 		//keyboard keys
-		const ENTER_KEY = 13;
 		const ESCAPE_KEY = 27;
 	//consts END
 
@@ -70,7 +72,7 @@ $(document).ready(function(){
 				buttons.openInNewTab.hide();
 				sitesSelect.hide();
 				buttons.settings.addClass('active');
-				firstInput.focus();
+				settingsFormInputs[0].siteName.focus();	//focus on the first input in the form
 			}
 			else{
 				iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
@@ -80,8 +82,8 @@ $(document).ready(function(){
 				$('select > option').remove();	//so it won't accidently remove options from the iframe
 				for(var i=0; i<currentTabsSite.length; i++){
 					if(currentTabsSite[i]!=null){
-						$('#settings li:nth-child('+(i+1)+') input[name="SiteName"]').val(currentTabsSite[i].siteName);
-						$('#settings li:nth-child('+(i+1)+') input[name="SiteUrl"]').val(currentTabsSite[i].siteURL);
+						settingsFormInputs[i].siteName.val(currentTabsSite[i].siteName);
+						settingsFormInputs[i].siteURL.val(currentTabsSite[i].siteURL);
 						addOption(currentTabsSite[i].siteName, currentTabsSite[i].siteURL);
 					}
 				}
@@ -92,16 +94,14 @@ $(document).ready(function(){
 			}
 
 			//set the form fields in the settings section
-			for(var i=1; i<= MAX_SITES_IN_TAB; i++){
-				var siteName = $('#settings li:nth-child('+i+') input[name="SiteName"]');
-				var siteURL = $('#settings li:nth-child('+i+') input[name="SiteUrl"]');
-				if(i<=currentTabsSite.length){
-					siteName.val(currentTabsSite[i-1].siteName);
-					siteURL.val(currentTabsSite[i-1].siteURL);
+			for(var i=0; i< MAX_SITES_IN_TAB; i++){
+				if(i<currentTabsSite.length){
+					settingsFormInputs[i].siteName.val(currentTabsSite[i].siteName);
+					settingsFormInputs[i].siteURL.val(currentTabsSite[i].siteURL);
 				}
 				else{
-					siteName.val('');
-					siteURL.val('');
+					settingsFormInputs[i].siteName.val('');
+					settingsFormInputs[i].siteURL.val('');
 				}
 			}
 		}
@@ -147,13 +147,11 @@ $(document).ready(function(){
     {
 		$('select > option').remove();	//so it won't accidently remove options from the iframe
 
-		var currentTabsSite = [];
-		for(var i=1; i<= MAX_SITES_IN_TAB; i++){
-			var siteName = $('#settings li:nth-child('+i+') input[name="SiteName"]').val();
-			var siteURL = $('#settings li:nth-child('+i+') input[name="SiteUrl"]').val();
-			if(siteName!= null && siteName!=""){
-				currentTabsSite.push(JSON.parse('{"siteName":"'+ siteName+'","siteURL":"'+siteURL+'"}'));
-				addOption(siteName, siteURL);
+		currentTabsSite = [];
+		for(var i=0; i< MAX_SITES_IN_TAB; i++){
+			if(settingsFormInputs[i].siteName.val()!= null && settingsFormInputs[i].siteName.val()!=""){
+				currentTabsSite.push(JSON.parse('{"siteName":"'+ settingsFormInputs[i].siteName.val()+'","siteURL":"'+settingsFormInputs[i].siteURL.val()+'"}'));
+				addOption(settingsFormInputs[i].siteName.val(), settingsFormInputs[i].siteURL.val());
 			}
 		}
 
@@ -192,8 +190,8 @@ $(document).ready(function(){
 				siteURL = currentTabsSite[i].siteURL;
 			}
 			
-			$('#settings li:nth-child('+(i+1)+') input[name="SiteName"]').val(siteName);
-			$('#settings li:nth-child('+(i+1)+') input[name="SiteUrl"]').val(siteURL);
+			settingsFormInputs[i].siteName.val(siteName);
+			settingsFormInputs[i].siteURL.val(siteURL);
 		}
 
 		//returning false so the page won't reload (image input acts like a submit)
@@ -203,6 +201,16 @@ $(document).ready(function(){
 	//methods END
 
 	//OnStart:
+
+	//initialize settingsFormInputs
+	settingsFormInputs = [];
+	for(var i=1; i<= MAX_SITES_IN_TAB; i++){
+		var obj = {
+			siteName : $('#settings li:nth-child('+i+') input[name="SiteName"]'),
+			siteURL : $('#settings li:nth-child('+i+') input[name="SiteUrl"]')
+		};
+		settingsFormInputs.push(obj);
+	}
 
 	// Check for the various File API support.
 	$.getJSON("data/config.json", function(json) {
@@ -229,7 +237,6 @@ $(document).ready(function(){
     			tabSites[i] = tabsList[i].options.url;
     		}
     	}
-    	saveTabSites();
 	});
 	//notification bar END
 
@@ -242,13 +249,7 @@ $(document).ready(function(){
     //Listener when user typing in the settings form, check what fields are valids
 	settingsSection.keyup(function(event){
 		if(isSettingsOpen){
-    		if(event.which == ENTER_KEY)
-			{
-				if(!buttons.save.is(':disabled')){
-					save();
-				}
-				return;
-			}
+    		
 			if(event.which == ESCAPE_KEY)
 			{
 				cancel();
@@ -257,9 +258,11 @@ $(document).ready(function(){
 
 			var flag = true;
 
-			for(var i=1; i<= MAX_SITES_IN_TAB; i++){	
-				var siteName = $('#settings li:nth-child('+i+') input[name="SiteName"]');
-				var siteURL = $('#settings li:nth-child('+i+') input[name="SiteUrl"]');
+			for(var i=0; i < MAX_SITES_IN_TAB; i++){	
+				//save the siteName and siteURL in local vars so it be shorter
+				var siteName = settingsFormInputs[i].siteName;
+				var siteURL = settingsFormInputs[i].siteURL;
+
 				siteName.removeClass('alertHighlight');
 				siteURL.removeClass('alertHighlight');
 				
@@ -312,7 +315,7 @@ $(document).ready(function(){
 		else{
 			buttons.settings.addClass('active');
 			settingsSection.show();
-			$('#settings li:nth-child(1) input[name="SiteName"]').focus();
+			settingsFormInputs[0].siteName.focus();	//focus on the first input field in the form
 			isSettingsOpen = true;			
 		}
 
