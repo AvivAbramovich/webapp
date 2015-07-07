@@ -68,7 +68,8 @@ $(document).ready(function(){
 			if(currentTabsSite.length == 0){
 				isSettingsOpen = true;
 				iframe.hide();
-				settingsSection.show();
+				//settingsSection.show(300);
+				settingsSection.slideDown(200);
 				buttons.openInNewTab.hide();
 				sitesSelect.hide();
 				buttons.settings.addClass('active');
@@ -78,7 +79,8 @@ $(document).ready(function(){
 				iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
 				isSettingsOpen = false;
 				buttons.settings.removeClass('active');
-				settingsSection.hide();
+				//settingsSection.hide();
+				settingsSection.slideUp(200);
 				$('select > option').remove();	//so it won't accidently remove options from the iframe
 				for(var i=0; i<currentTabsSite.length; i++){
 					if(currentTabsSite[i]!=null){
@@ -109,7 +111,8 @@ $(document).ready(function(){
 			currentTabsSite = tabSites[openTab-1];
 			iframe.show();
 			iframe.attr('src', fixUrl(currentTabsSite));
-			settingsSection.hide();
+			//settingsSection.hide();
+				settingsSection.slideUp(200);
 			buttons.settings.hide();
 			sitesSelect.hide();
 			buttons.openInNewTab.show();
@@ -173,7 +176,8 @@ $(document).ready(function(){
 			isSettingsOpen = false;
 			iframe.show();
 			iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
-			settingsSection.hide();
+			//settingsSection.hide();
+			settingsSection.slideUp(200);
 			buttons.settings.show();
 			buttons.openInNewTab.show();
 			sitesSelect.show();
@@ -307,14 +311,16 @@ $(document).ready(function(){
 		if(isSettingsOpen){
 			if(currentTabsSite.length!=0){
 				iframe.show();
-				settingsSection.hide();
+				//settingsSection.hide();
+				settingsSection.slideUp(200);
 				buttons.settings.removeClass('active');
 				isSettingsOpen = false;
 			}
 		}
 		else{
 			buttons.settings.addClass('active');
-			settingsSection.show();
+			//settingsSection.show(300);
+			settingsSection.slideDown(200);
 			settingsFormInputs[0].siteName.focus();	//focus on the first input field in the form
 			isSettingsOpen = true;			
 		}

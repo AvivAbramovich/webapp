@@ -5,6 +5,7 @@ body{
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
+    position: relative;
 }
 
 li{
@@ -63,6 +64,10 @@ nav{
 	width: 95%;
 	margin: 0 auto;
 	padding-top: 20px;
+	
+	/* so the drop down won't be hidden by the main section below*/
+	position: relative;
+	z-index: 2;
 }
 
 .nav-section:nth-child(1) {
@@ -123,6 +128,21 @@ nav{
     overflow: hidden;
 }
 
+/* the triangle*/
+.menu-caption p:after
+{
+	content: "";
+	float: right;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid black;
+
+	margin-top: 10px;
+}
+
 .nav-section:hover .action-list{
 	/*display: block; Didn't works with transitions*/
 	cursor: pointer;
@@ -134,11 +154,22 @@ nav{
 	background-color: #44424D;
 }
 
+.nav-section:hover .menu-caption p:after	/*flip the triangle*/
+{
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid black;
+	border-top: 10px solid transparent;
+	margin-top: 0;
+	transition: 0.3s;
+}
+
 .action-list li{
 	background-color: white;
 	padding-left: 20px;
 	padding-top: 5px;
 	padding-bottom: 5px;
+	border-bottom: 1px dotted gray;
 }
 
 .action-list li:hover{
@@ -151,6 +182,10 @@ nav{
 }
 
 /* TABS */
+#main{
+	position: relative;
+}
+
 .tabs{
 	width: 95%;
 	margin: 0 auto;
@@ -218,15 +253,19 @@ iframe{
 	width: 98%;
 	margin: 0 auto;
 	height: 800px;
+	z-index: 0.9
 }
 
 /* SETTINGS */
 #settings{
 	width: 98%;
+	right: 1%;	/* margin: 0 auto; not working so right: 1%; instead*/
 	height: 220px;
-	margin: 0 auto;
 	background-color: white;
 	padding-top: 10px;
+	position: absolute;
+	z-index: 1;
+	border: 1px solid;
 }
 
 #settings ul{
