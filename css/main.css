@@ -122,10 +122,6 @@ and the third, because the third is floatted right*/
 	color: black;
 }
 
-.menu-caption p{
-	padding-top: 5px;
-}
-
 /*drop down menues */
 .action-list{
 	/*display: none;*/
@@ -136,6 +132,10 @@ and the third, because the third is floatted right*/
     opacity: 0;
     height: 0;
     overflow: hidden;
+}
+
+.menu-caption p{
+	padding-top: 5px;
 }
 
 /* the triangle*/
@@ -150,7 +150,7 @@ and the third, because the third is floatted right*/
 	border-right: 10px solid transparent;
 	border-top: 10px solid black;
 
-	margin-top: 10px;
+	margin-top: 5px;
 }
 
 .nav-section:hover .action-list{
