@@ -91,8 +91,14 @@ nav{
     vertical-align: top;
 }
 
-.nav-section:not(:nth-child(3)){
-	margin-right: 4%;
+.nav-section:nth-child(1) 
+/* the margin between the first and the second box no need in rule for the second 
+and the third, because the third is floatted right*/
+{
+	margin-right: 5%;
+}
+.nav-section:nth-child(3){
+	float: right;
 }
 
 .nav-section > p{
@@ -164,6 +170,11 @@ nav{
 	transition: 0.3s;
 }
 
+.nav-section .menu-caption p:after	/*flip the triangle bacl when no longer hovering*/
+{
+	transition: 0.3s;
+}
+
 .action-list li{
 	background-color: white;
 	padding-left: 20px;
@@ -184,6 +195,12 @@ nav{
 /* TABS */
 #main{
 	position: relative;
+	min-height: 350px; /*so when the settings menu is open and there's no
+						 iframe because no sites in the form, the main div
+						 will contain the form (is not contain it because
+						 the form has absolute positionso it would floating
+						 above the iframe) */
+
 }
 
 .tabs{
@@ -206,7 +223,11 @@ nav{
 	color: white;
 }
 .tabs > ul > li:not(:nth-child(4)){
-	margin-right: 5%;
+	margin-right: 6%;
+}
+
+.tabs > ul > li:nth-child(4){
+	float: right;
 }
 
 .tabs > ul > .active{

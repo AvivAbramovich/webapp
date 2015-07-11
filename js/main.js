@@ -165,6 +165,12 @@ $(document).ready(function(){
 
 		cancel();	//dismiss the settings form
 
+		if(currentTabsSite.length != 0)	//show the iframe and load the first site if the form is not empty
+		{
+			iframe.show();
+			iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
+		}
+
 		//returning false so the page won't reload (image input acts like a submit)
 		return false;
 	}
@@ -177,9 +183,6 @@ $(document).ready(function(){
 		}
 		else{
 			isSettingsOpen = false;
-			iframe.show();
-			iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
-			//settingsSection.hide();
 			settingsSection.slideUp(200);
 			buttons.settings.show();
 			buttons.openInNewTab.show();
