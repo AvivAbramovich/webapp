@@ -122,6 +122,10 @@ and the third, because the third is floatted right*/
 	color: black;
 }
 
+.menu-caption p{
+	padding-top: 5px;
+}
+
 /*drop down menues */
 .action-list{
 	/*display: none;*/
