@@ -4,11 +4,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- jQuery library -->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<title>WebApp</title>
 
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="fonts/style.css">
 </head>
 <body>
 	<header>
@@ -82,40 +81,42 @@
 
 		<section class="tabs">
 			<ul>
-				<li>Quick Reports</li>
-				<li>My Folders</li>
-				<li>My Team Folders</li>
-				<li>Public Folders</li>
+				<li class="icon-star-o">Quick Reports</li>
+				<li class="icon-external-link">My Folders</li>
+				<li class="icon-copy">My Team Folders</li>
+				<li class="icon-folder-open-o">Public Folders</li>
 			</ul>
 			<div id="main">
 				<div id="tab-actions">
 					<select>
 					<!-- Append "option"s with js from localStorage-->
 					</select>
-					<img id="settingsBtn" src="img/Settings.png">
-					<img id="externalBtn" src="img/External.png">
+					<form>
+						<input type="image" id="external-button" src="img/icons/expand.png" alt="Open in another tab">
+						<input type="image" id="settings-button" src="img/icons/settings.png" alt="Settings">
+					</form>
 				</div>
-				<form class="settings">
+				<form id="settings">
 				<ul>
 					<li>
 						<p>Report 1</p>
-						<p>Name</p><input type="text" name="SiteName" placeholder="First Site Name">
-						<p>URL</p><input type="url" name="SiteUrl" placeholder="First Site URL">
+						<label for="SiteName">Name</label><input type="text" name="SiteName" placeholder="First Site Name">
+						<label for="SiteUrl">URL</label><input type="url" name="SiteUrl" placeholder="First Site URL">
 					</li>
 					<li>
 						<p>Report 2</p>
-						<p>Name</p><input type="text" name="SiteName" placeholder="Second Site Name">
-						<p>URL</p><input type="url" name="SiteUrl" placeholder="Second Site URL">
+						<label for="SiteName">Name</label><input type="text" name="SiteName" placeholder="First Site Name">
+						<label for="SiteUrl">URL</label><input type="url" name="SiteUrl" placeholder="First Site URL">
 					</li>
 					<li>
 						<p>Report 3</p>
-						<p>Name</p><input type="text" name="SiteName" placeholder="Third Site Name">
-						<p>URL</p><input type="url" name="SiteUrl" placeholder="Third Site URL">
+						<label for="SiteName">Name</label><input type="text" name="SiteName" placeholder="First Site Name">
+						<label for="SiteUrl">URL</label><input type="url" name="SiteUrl" placeholder="First Site URL">
 					</li>
 				</ul>
 				<div id="cancelSaveSection">
-					<input id="saveBtn" type="button" value="Save">
-					<input id="cancelBtn" type="button" value="Cancel">
+					<input id="save-button" type="submit" value="Save">
+					<input id="cancel-button" type="button" value="Cancel">
 				</div>
 				</form>
 				<iframe>
@@ -125,6 +126,8 @@
 		</section>
 	</section>
 
+	<!-- Jquery library include -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>
