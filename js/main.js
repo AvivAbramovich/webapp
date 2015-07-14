@@ -1,15 +1,15 @@
 $(document).ready(function(){
 	//Properties
 
-	var openTab;	//the current open tab
+	//var openTab;	//the current open tab
 	//1 - quick reports
 	//2 - my folders
 	//3 - my team folders
 	//4 - public folders
 
-	tabSites;	//the site(s) in each tab
+	//var tabSites;	//the site(s) in each tab
 
-	var currentTabsSite;	//the site(s) of the current open tab
+	//var currentTabsSite;	//the site(s) of the current open tab
 
 	var iframe = $('iframe');	//the iframe
 
@@ -18,6 +18,17 @@ $(document).ready(function(){
 		openInNewTab : $('#external-button'),
 		save : $('#save-button'),
 		cancel : $('#cancel-button')
+	};
+
+	//the current state of the site
+	var currentState = {
+		openTab : null, //the current open tab
+		//1 - quick reports
+		//2 - my folders
+		//3 - my team folders
+		//4 - public folders
+
+		tabSites: null	//the site(s) in each tab
 	};
 
 	var settingsFormInputs;	//array of objects that hold the jquery selectors for the input fields in the settings form
@@ -52,24 +63,21 @@ $(document).ready(function(){
 		sitesSelect.append('<option value="'+siteURL+'"">'+siteName+'</option>');
 	}
 
-	function saveTabSites(){
-		tabSites[openTab-1] = JSON.stringify(currentTabsSite);
-		localStorage.setItem('openTab',openTab);
-		localStorage.setItem('tabSites', JSON.stringify(tabSites));
+	function saveToLocalStorage(){
+		localStorage.setItem('webapp', JSON.stringify(currentState));
 	}
 
 	function changeTabFucn(tab){
+		if(tab == null)
+			tab = currentState.openTab;
 		$('.tabs > ul li').removeClass('active');
 		$('.tabs > ul li:nth-child('+tab+')').addClass('active');
-		openTab = tab;
-		localStorage.setItem('openTab', openTab);
-
-		if(openTab==QUICK_REPORTS || openTab==MY_TEAM_FOLDERS){
-			currentTabsSite = JSON.parse(tabSites[openTab-1]);
+		currentState.openTab = tab;
+		var currentTabsSite = currentState.tabSites[tab-1];
+		if(tab==QUICK_REPORTS || tab==MY_TEAM_FOLDERS){
 			if(currentTabsSite.length == 0){
 				isSettingsOpen = true;
 				iframe.hide();
-				//settingsSection.show(300);
 				settingsSection.slideDown(200);
 				buttons.openInNewTab.hide();
 				sitesSelect.hide();
@@ -77,10 +85,9 @@ $(document).ready(function(){
 				settingsFormInputs[0].siteName.focus();	//focus on the first input in the form
 			}
 			else{
-				iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
+				iframe.attr('src', currentTabsSite[0].siteURL);
 				isSettingsOpen = false;
 				buttons.settings.removeClass('active');
-				//settingsSection.hide();
 				settingsSection.slideUp(200);
 				$('select > option').remove();	//so it won't accidently remove options from the iframe
 				for(var i=0; i<currentTabsSite.length; i++){
@@ -109,11 +116,9 @@ $(document).ready(function(){
 			}
 		}
 		else{
-			currentTabsSite = tabSites[openTab-1];
 			iframe.show();
-			iframe.attr('src', fixUrl(currentTabsSite));
-			//settingsSection.hide();
-				settingsSection.slideUp(200);
+			iframe.attr('src', currentTabsSite);
+			settingsSection.slideUp(200);
 			buttons.settings.hide();
 			sitesSelect.hide();
 			buttons.openInNewTab.show();
@@ -121,30 +126,15 @@ $(document).ready(function(){
 		}
 
 		window.location.hash = tabs[tab-1];
+		saveToLocalStorage();
 	}
 
 	function validateURL(textval) 
 	//check if the site url the user entered is valid
-	//returns true if the URL is valid, or "almost valid" (miss "http://" prefix), false otherwise
 	{
       var urlregex = new RegExp(
             "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
-      if(urlregex.test(textval))
-      	return true;
-
-      //miss "http://", also acceptable
-      urlregex = new RegExp(
-            "^([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
       return urlregex.test(textval);
-    }
-
-    function fixUrl(url)
-    //get a valid url or "almost valid". if it "almost valid", add the "http://" prefix
-    {
-    	if(!new RegExp(
-            "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$").test(url))
-      		return "http://"+url;
-      	return url;
     }
 
     function save()
@@ -153,7 +143,7 @@ $(document).ready(function(){
     {
 		$('select > option').remove();	//so it won't accidently remove options from the iframe
 
-		currentTabsSite = [];
+		var currentTabsSite = [];
 		for(var i=0; i< MAX_SITES_IN_TAB; i++){
 			if(settingsFormInputs[i].siteName.val()!= null && settingsFormInputs[i].siteName.val()!=""){
 				currentTabsSite.push(JSON.parse('{"siteName":"'+ settingsFormInputs[i].siteName.val()+'","siteURL":"'+settingsFormInputs[i].siteURL.val()+'"}'));
@@ -161,14 +151,15 @@ $(document).ready(function(){
 			}
 		}
 
-		saveTabSites();	//save the current tab sites to the local storage
+		currentState.tabSites[currentState.openTab-1] = currentTabsSite;
+		saveToLocalStorage();	//save the current tab sites to the local storage
 
 		cancel();	//dismiss the settings form
 
 		if(currentTabsSite.length != 0)	//show the iframe and load the first site if the form is not empty
 		{
 			iframe.show();
-			iframe.attr('src', fixUrl(currentTabsSite[0].siteURL));
+			iframe.attr('src', currentTabsSite[0].siteURL);
 		}
 
 		//returning false so the page won't reload (image input acts like a submit)
@@ -176,6 +167,8 @@ $(document).ready(function(){
 	}
 
 	function cancel(){
+		var currentTabsSite = currentState.tabSites[currentState.openTab-1];
+
 		if(currentTabsSite.length == 0){
 			iframe.hide();
 			buttons.openInNewTab.hide();
@@ -208,82 +201,96 @@ $(document).ready(function(){
 		return false;
 	}
 
-	//methods END
+	function onStart(){
+		var ls = localStorage.getItem('webapp');	//load content from localStorage
+		if(ls == null){
+			currentState.openTab = 1;
+			currentState.tabSites = [[],'',[],''];
+		}
+		else
+			currentState = JSON.parse(ls);
 
-	//OnStart:
-	var hash = window.location.hash;	//check if user entered a url with anchor
-	openTab = 0;
-	if(hash.length > 0){
-		hash = hash.substr(1);	//remove the '#'
-		if(hash === tabs[0])
-			openTab = 1;
-		else{
-			if(hash === tabs[1])
-				openTab = 2;
+		var hash = window.location.hash;	//check if user entered a url with anchor
+		if(hash.length > 0){
+			hash = hash.substr(1);	//remove the '#'
+			if(hash === tabs[0])
+				currentState.openTab = 1;
 			else{
-				if(hash === tabs[2])
-					openTab = 3
+				if(hash === tabs[1])
+					currentState.openTab = 2;
 				else{
-					if(hash === tabs[3])
-						openTab = 4;
+					if(hash === tabs[2])
+						currentState.openTab = 3
+					else{
+						if(hash === tabs[3])
+							currentState.openTab = 4;
+						else
+							console.log('Invalid url anchor. open last opened tab from localStorage');
+					}
 				}
 			}
 		}
+
+		//initialize settingsFormInputs
+		settingsFormInputs = [];
+		for(var i=1; i<= MAX_SITES_IN_TAB; i++){
+			var obj = {
+				siteName : $('#settings li:nth-child('+i+') input[name="SiteName"]'),
+				siteURL : $('#settings li:nth-child('+i+') input[name="SiteUrl"]')
+			};
+			settingsFormInputs.push(obj);
+		}
+
+		// Check for the various File API support.
+		$.getJSON("data/config.json", function(json) {
+	    	//notification bar
+	    	$('.notifications').append('<p>'+json.notification+'</p>');
+
+	    	//quickActions
+	    	var quickActions = json.quickActions;
+	    	for(var i=0; i<quickActions.length; i++){
+	    		var selector = '.nav-section:nth-child('+(i+1)+')';
+	    		var currentDiv = quickActions[i];	//for faster access in the next commands
+	    		if(currentDiv.icon != null)
+	    			$(selector).css('background-image', 'url(img/icons/'+currentDiv.icon+'.png)');
+	    		if(currentDiv.actionsLabel != null){
+	    			$(selector+' .menu-caption p').empty();
+	    			$(selector+' .menu-caption p').append(currentDiv.actionsLabel);
+	    		}
+	    		if(currentDiv.label != null){
+	    			$(selector+' > p').empty();
+	    			$(selector+' > p').append(currentDiv.label);
+	    		}
+
+	    		//the li
+	    		if(currentDiv.actions != null){
+		    		$(selector+' .action-list li').remove();
+		    		for(var j=0; j< currentDiv.actions.length; j++){
+		    			$(selector+' .action-list').append('<li><a href="'+currentDiv.actions[j].url+'">'+currentDiv.actions[j].label+'</a></li>');
+		    		}
+		    	}
+	    	}
+
+	    	//the tabs
+	    	var tabsList = json.tabsList;
+	    	for(var i=0; i<tabsList.length; i++){
+	    		if(tabsList[i].options.url!=null){
+	    			currentState.tabSites[i] = tabsList[i].options.url;
+	    		}
+	    	}
+		});
+		//notification bar END
+
+		//set the tab for the last open tab (from localStorage)
+	    changeTabFucn();
+
+	    //activing the last open tab (applying CSS rules)
+	    $('.tabs > ul li:nth-child('+currentState.openTab+')').addClass('active');
 	}
 
-	if(openTab == 0)
-		openTab = localStorage.getItem('openTab');
-	if(openTab ==null)	//in case it's the first time in the site and 'openTab' is not yet stored in the localStorage
-		openTab = 1;
-	var tabSites = JSON.parse(localStorage.getItem('tabSites'));
-	if(tabSites == null){
-		tabSites = ['[]','','[]',''];	//JSONs array
-		localStorage.setItem('tabSites', JSON.stringify(tabSites));
-	}
+	//methods END
 
-	//initialize settingsFormInputs
-	settingsFormInputs = [];
-	for(var i=1; i<= MAX_SITES_IN_TAB; i++){
-		var obj = {
-			siteName : $('#settings li:nth-child('+i+') input[name="SiteName"]'),
-			siteURL : $('#settings li:nth-child('+i+') input[name="SiteUrl"]')
-		};
-		settingsFormInputs.push(obj);
-	}
-
-	// Check for the various File API support.
-	$.getJSON("data/config.json", function(json) {
-    	//notification bar
-    	$('.notifications').append('<p>'+json.notification+'</p>');
-
-    	//quickActions
-    	var quickActions = json.quickActions;
-    	for(var i=0; i<quickActions.length; i++){
-    		var selector = '.nav-section:nth-child('+(i+1)+')';
-    		//$(selector+' > p').text(quickActions[i].label);	//not good, it just change the text but the html tags shown as plaintext
-
-    		//the li
-    		$(selector+' .action-list li').remove();
-    		for(var j=0; j< quickActions[i].actions.length; j++){
-    			$(selector+' .action-list').append('<li><a href="'+quickActions[i].actions[j].url+'">'+quickActions[i].actions[j].label+'</a></li>');
-    		}
-    	}
-
-    	//the tabs
-    	var tabsList = json.tabsList;
-    	for(var i=0; i<tabsList.length; i++){
-    		if(tabsList[i].options.url!=null){
-    			tabSites[i] = tabsList[i].options.url;
-    		}
-    	}
-	});
-	//notification bar END
-
-	//set the tab for the last open tab (from localStorage)
-    changeTabFucn(openTab);
-
-    //activing the last open tab (applying CSS rules)
-    $('.tabs > ul li:nth-child('+openTab+')').addClass('active');
+	/* -------------------------  EVENTS  -------------------------------*/
 
     //Listener when user typing in the settings form, check what fields are valids
 	settingsSection.keyup(function(event){
@@ -344,9 +351,8 @@ $(document).ready(function(){
 	});
 	buttons.settings.click(function(){
 		if(isSettingsOpen){
-			if(currentTabsSite.length!=0){
+			if(currentState.tabSites[currentState.openTab-1].length!=0){
 				iframe.show();
-				//settingsSection.hide();
 				settingsSection.slideUp(200);
 				buttons.settings.removeClass('active');
 				isSettingsOpen = false;
@@ -354,7 +360,6 @@ $(document).ready(function(){
 		}
 		else{
 			buttons.settings.addClass('active');
-			//settingsSection.show(300);
 			settingsSection.slideDown(200);
 			settingsFormInputs[0].siteName.focus();	//focus on the first input field in the form
 			isSettingsOpen = true;			
@@ -366,7 +371,7 @@ $(document).ready(function(){
 
 	//when option selected, apply it on the iframe
 	sitesSelect.change(function(){
-		iframe.attr('src',fixUrl($("option:selected").attr('value')));
+		iframe.attr('src',$("option:selected").attr('value'));
 	});
 
 	//the search form
@@ -375,23 +380,23 @@ $(document).ready(function(){
 		var str = $('.search-box input').val().toLowerCase();
 
 		//search in tab 1
-		var tab1 = JSON.parse(tabSites[QUICK_REPORTS-1]);
+		var tab1 = currentState.tabSites[QUICK_REPORTS-1];
 		for(var i=0; i<tab1.length; i++){
 			if (tab1[i].siteName.toLowerCase().indexOf(str) >= 0){
 				changeTabFucn(QUICK_REPORTS);
 				$('#tab-actions > select > option:nth-child('+(i+1)+')').prop('selected', true);
-				iframe.attr('src', fixUrl(tab1[i].siteURL));
+				iframe.attr('src', tab1[i].siteURL);
 				return;
 			}
 		}
 
 		//search in tab 3
-		var tab2 = JSON.parse(tabSites[MY_TEAM_FOLDERS-1]);
+		var tab2 = currentState.tabSites[MY_TEAM_FOLDERS-1];
 		for(var i=0; i<tab2.length; i++){
 			if (tab2[i].siteName.toLowerCase().indexOf(str) >= 0){
 				changeTabFucn(MY_TEAM_FOLDERS);
 				$('#tab-actions > select > option:nth-child('+(i+1)+')').prop('selected', true);
-				iframe.attr('src', fixUrl(tab2[i].siteURL));
+				iframe.attr('src', tab2[i].siteURL);
 				return;
 			}
 		}
@@ -400,4 +405,9 @@ $(document).ready(function(){
 		$('.notifications p').remove();
 		$('.notifications').append('<p>'+'The searched report '+$('.search-box input').val()+' was not found</p>');
 	});
+
+	//Events end
+
+	//calling onStart
+	onStart();
 });

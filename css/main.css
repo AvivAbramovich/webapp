@@ -70,16 +70,6 @@ nav{
 	z-index: 2;
 }
 
-.nav-section:nth-child(1) {
-    background-image:url(../img/icons/action-report-new.png);
-}
-.nav-section:nth-child(2) {
-    background-image:url(../img/icons/action-report-top.png);
-}
-.nav-section:nth-child(3) {
-    background-image:url(../img/icons/actions-help.png);
-}
-
 .nav-section{
 	display: inline-block;
 	width: 30%;
@@ -107,6 +97,7 @@ and the third, because the third is floatted right*/
 	color: white;
 	padding-top: 10px;
 	height: 70px;
+	text-align: center;
 }
 
 .menu{
@@ -322,9 +313,12 @@ iframe{
 	margin-right: 2%;
 	height: 20px;
 }
-
+#settings-button{
+	transition: 2s;
+}
 #settings-button.active{
 	background-color: white;
+	transform: rotate(90deg);
 }
 
 /* the Settings Save button*/
