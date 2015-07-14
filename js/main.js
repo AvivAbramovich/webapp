@@ -180,7 +180,9 @@ $(document).ready(function(){
 		if(isSettingsOpen){
     		if(event.which == 13)//enter
 			{
-				save();
+				console.log('save button disabled? '+$('saveBtn').hasClass('disabled'));
+				if($('saveBtn').hasClass('disabled')!)
+					save();
 				return;
 			}
 			if(event.which == 27)//Esc
