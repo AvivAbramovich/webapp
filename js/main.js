@@ -1,15 +1,15 @@
 $(document).ready(function(){
 	//Properties
 
-	//var openTab;	//the current open tab
-	//1 - quick reports
-	//2 - my folders
-	//3 - my team folders
-	//4 - public folders
-
-	//var tabSites;	//the site(s) in each tab
-
-	//var currentTabsSite;	//the site(s) of the current open tab
+	//the current state of the site
+	var currentState = {
+		tabSites: null,	//the site(s) in each tab
+		openTab : null, //the current open tab
+		//1 - quick reports
+		//2 - my folders
+		//3 - my team folders
+		//4 - public folders
+	};
 
 	var iframe = $('iframe');	//the iframe
 
@@ -18,17 +18,6 @@ $(document).ready(function(){
 		openInNewTab : $('#external-button'),
 		save : $('#save-button'),
 		cancel : $('#cancel-button')
-	};
-
-	//the current state of the site
-	var currentState = {
-		openTab : null, //the current open tab
-		//1 - quick reports
-		//2 - my folders
-		//3 - my team folders
-		//4 - public folders
-
-		tabSites: null	//the site(s) in each tab
 	};
 
 	var settingsFormInputs;	//array of objects that hold the jquery selectors for the input fields in the settings form
@@ -45,16 +34,13 @@ $(document).ready(function(){
 
 	const MAX_SITES_IN_TAB = 3;
 
-		//tabs
-		const QUICK_REPORTS = 1;
-		const MY_FOLDERS = 2;
-		const MY_TEAM_FOLDERS = 3;
-		const PUBLIC_FOLDERS = 4;
+	//tabs
+	const QUICK_REPORTS = 1;
+	const MY_FOLDERS = 2;
+	const MY_TEAM_FOLDERS = 3;
+	const PUBLIC_FOLDERS = 4;
 
-		//keyboard keys
-		const ESCAPE_KEY = 27;
-
-		const tabs = ["quick-reports", "my-folders", "my-team-folders", "public-folders"];
+	const tabs = ["quick-reports", "my-folders", "my-team-folders", "public-folders"];
 	//consts END
 
 	//methods
@@ -296,7 +282,7 @@ $(document).ready(function(){
 	settingsSection.keyup(function(event){
 		if(isSettingsOpen){
     		
-			if(event.which == ESCAPE_KEY)
+			if(event.which == 27)	//esc key
 			{
 				cancel();
 				return;
@@ -350,6 +336,17 @@ $(document).ready(function(){
   		win.focus();
 	});
 	buttons.settings.click(function(){
+		//rotate animation. PROBLEM: it spins the background*/
+		var flag = 0;
+		$({deg: 0}).animate({deg: 360}, {
+	        duration: 500,
+	        step: function(now) {
+	            buttons.settings.css({
+	                transform: 'rotate(' + now + 'deg)'
+	            })}
+    	});
+    	//end animation
+
 		if(isSettingsOpen){
 			if(currentState.tabSites[currentState.openTab-1].length!=0){
 				iframe.show();
@@ -362,7 +359,7 @@ $(document).ready(function(){
 			buttons.settings.addClass('active');
 			settingsSection.slideDown(200);
 			settingsFormInputs[0].siteName.focus();	//focus on the first input field in the form
-			isSettingsOpen = true;			
+			isSettingsOpen = true;		
 		}
 
 		//returning false so the page won't reload (image input acts like a submit)
