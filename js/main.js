@@ -123,6 +123,16 @@ $(document).ready(function(){
       return urlregex.test(textval);
     }
 
+    function spinElement(element){
+		$({deg: 0}).animate({deg: 360}, {
+	        duration: 500,
+	        step: function(now) {
+	            element.css({
+	                transform: 'rotate(' + now + 'deg)'
+	            })}
+    	});
+	}
+
     function save()
     //finish the settings form, applying the changes and save it to the localStorage
     //return false (always) so the page won't reload itself
@@ -182,6 +192,9 @@ $(document).ready(function(){
 			settingsFormInputs[i].siteName.val(siteName);
 			settingsFormInputs[i].siteURL.val(siteURL);
 		}
+
+		//spin button
+		spinElement(buttons.settings);
 
 		//returning false so the page won't reload (image input acts like a submit)
 		return false;
@@ -313,7 +326,6 @@ $(document).ready(function(){
 				buttons.save.attr('disabled', false);
 			else
 				buttons.save.attr('disabled', true);
-			}
 		}
 	});
 	
@@ -327,21 +339,11 @@ $(document).ready(function(){
 	buttons.save.click(function(){return save();});
 	buttons.cancel.click(function(){return cancel();});
 	buttons.openInNewTab.click(function(){
+		spinElement(buttons.openInNewTab);
 		var win = window.open(iframe.attr('src'), '_blank');
-  		win.focus();
+  		win.focus();§§
 	});
 	buttons.settings.click(function(){
-		//rotate animation. PROBLEM: it spins the background*/
-		var flag = 0;
-		$({deg: 0}).animate({deg: 360}, {
-	        duration: 500,
-	        step: function(now) {
-	            buttons.settings.css({
-	                transform: 'rotate(' + now + 'deg)'
-	            })}
-    	});
-    	//end animation
-
 		if(isSettingsOpen){
 			if(currentState.tabSites[currentState.openTab-1].length!=0){
 				iframe.show();
