@@ -283,10 +283,7 @@ $(document).ready(function(){
 		if(isSettingsOpen){
     		
 			if(event.which == 27)	//esc key
-			{
-				cancel();
-				return;
-			}
+				return cancel();
 
 			var flag = true;
 
@@ -312,13 +309,10 @@ $(document).ready(function(){
 			}
 			
 
-			if(flag){
+			if(flag)
 				buttons.save.attr('disabled', false);
-
-			}
-			else{
+			else
 				buttons.save.attr('disabled', true);
-			}
 		}
 	});
 	
