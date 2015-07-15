@@ -238,7 +238,7 @@ and the third, because the third is floatted right*/
 /* the nav bar in the tab*/
 #tab-actions{
 	display: block;
-	height: 80px;
+	height: 75px;
 	width: 95%;
 	margin: 0 auto;
 }
@@ -256,11 +256,11 @@ and the third, because the third is floatted right*/
 }
 
 #tab-actions input{
-  	margin-left: 30px;
+  	margin-left: 20px;
   	padding-top: 10px;
   	padding-right: 10px;
   	padding-left: 10px;
-  	padding-bottom: 15px;
+  	padding-bottom: 10px;
 }
 
 /* the iframe*/
@@ -313,12 +313,9 @@ iframe{
 	margin-right: 2%;
 	height: 20px;
 }
-#settings-button{
-	transition: 2s;
-}
+
 #settings-button.active{
 	background-color: white;
-	transform: rotate(90deg);
 }
 
 /* the Settings Save button*/
