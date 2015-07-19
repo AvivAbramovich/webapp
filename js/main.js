@@ -123,13 +123,19 @@ $(document).ready(function(){
       return urlregex.test(textval);
     }
 
-    function spinElement(element){
+    function spinSettingsButton(){
+    	if(isSettingsOpen)
+    		buttons.settings.removeClass('active');
 		$({deg: 0}).animate({deg: 360}, {
 	        duration: 500,
 	        step: function(now) {
-	            element.css({
+	            buttons.settings.css({
 	                transform: 'rotate(' + now + 'deg)'
-	            })}
+	            })},
+	       	complete: function(){
+	       		if(isSettingsOpen)
+					buttons.settings.addClass('active');
+	       	}
     	});
 	}
 
@@ -194,7 +200,7 @@ $(document).ready(function(){
 		}
 
 		//spin button
-		spinElement(buttons.settings);
+		spinSettingsButton();
 
 		//returning false so the page won't reload (image input acts like a submit)
 		return false;
@@ -339,21 +345,19 @@ $(document).ready(function(){
 	buttons.save.click(function(){return save();});
 	buttons.cancel.click(function(){return cancel();});
 	buttons.openInNewTab.click(function(){
-		spinElement(buttons.openInNewTab);
 		var win = window.open(iframe.attr('src'), '_blank');
   		win.focus();
 	});
 	buttons.settings.click(function(){
+		spinSettingsButton();
 		if(isSettingsOpen){
 			if(currentState.tabSites[currentState.openTab-1].length!=0){
 				iframe.show();
 				settingsSection.slideUp(200);
-				buttons.settings.removeClass('active');
 				isSettingsOpen = false;
 			}
 		}
 		else{
-			buttons.settings.addClass('active');
 			settingsSection.slideDown(200);
 			settingsFormInputs[0].siteName.focus();	//focus on the first input field in the form
 			isSettingsOpen = true;		
