@@ -368,3 +368,14 @@ iframe{
 #save-button:hover, #settingsBtn:hover, #externalBtn:hover, .tabs > ul >li:hover, #cancel-button:hover{
 	cursor: pointer;
 }
+
+/*Accesssability*/
+li[aria-selected='true'] {
+color: black;
+background-color: #fff;
+border-bottom: 1px solid white;
+}
+
+div[aria-hidden='true'] {
+display: none;
+}
