@@ -58,6 +58,8 @@ $(document).ready(function(){
 			tab = currentState.openTab;
 		$('.tabs > ul li').removeClass('active');
 		$('.tabs > ul li:nth-child('+tab+')').addClass('active');
+		$("li[role='tab']").attr("aria-selected","false"); //deselect all the tabs 
+	 	$('.tabs > ul li:nth-child('+tab+')').attr("aria-selected","true");
 		currentState.openTab = tab;
 		var currentTabsSite = currentState.tabSites[tab-1];
 		if(tab==QUICK_REPORTS || tab==MY_TEAM_FOLDERS){
@@ -404,23 +406,14 @@ $(document).ready(function(){
 		$('.notifications').append('<p>'+'The searched report '+$('.search-box input').val()+' was not found</p>');
 	});
 
-	//Events end
-
-	//Accessability
-	$("li[role='tab']").click(function(){  
-		$("li[role='tab']").attr("aria-selected","false"); //deselect all the tabs 
-	 	$(this).attr("aria-selected","true");  // select this tab
-		var tabpanid= $(this).attr("aria-controls"); //find out what tab panel this tab controls  
-	   	var tabpan = $("#"+tabpanid);  
-		$("div[role='tabpanel']").attr("aria-hidden","true"); //hide all the panels 
-		tabpan.attr("aria-hidden","false");  // show our panel
-	 });
-
+	//choose one of the tabs by hitting enter
 	$("li[role='tab']").keydown(function(ev) {
 		if (ev.which ==13) {
 			$(this).click()
 		}
 	});
+
+	//Events end
 
 	//calling onStart
 	onStart();

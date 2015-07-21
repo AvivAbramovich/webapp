@@ -221,9 +221,10 @@ and the third, because the third is floatted right*/
 	margin-right: 6%;
 }
 
+/*
 .tabs > ul > li:nth-child(4){
 	float: right;
-}
+}*/
 
 .tabs > ul > .active{
 	background-color: #DFE9EB;
