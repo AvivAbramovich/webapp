@@ -362,6 +362,7 @@ $(document).ready(function(){
 	buttons.openInNewTab.click(function(){
 		var win = window.open(iframe.attr('src'), '_blank');
   		win.focus();
+  		return false;
 	});
 	buttons.settings.click(function(){
 		spinSettingsButton();
