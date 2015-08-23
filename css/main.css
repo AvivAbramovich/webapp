@@ -380,3 +380,7 @@ border-bottom: 1px solid white;
 div[aria-hidden='true'] {
 display: none;
 }
+
+.hidden{
+	display: none;
+}

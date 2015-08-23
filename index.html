@@ -15,7 +15,8 @@
 			<a href="#"><img src="img/logo-netcraft.svg" alt="netcraft"></a>
 
 			<form class="search-box">
-				<input type="search" name="q" placeholder="search">
+				<label class="hidden" for="seachBox">Search in the site</label>
+				<input type="search" name="q" placeholder="search" id="seachBox">
 			</form>
 		</div>
 	</header>
@@ -88,7 +89,8 @@
 			</ul>
 			<div id="main">
 				<div id="tab-actions">
-					<select>
+					<label class="hidden" for="sitesSelect">Select a site</label>
+					<select id="sitesSelect">
 					<!-- Append "option"s with js from localStorage-->
 					</select>
 					<form>
