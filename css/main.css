@@ -185,6 +185,11 @@ and the third, because the third is floatted right*/
 .action-list a{
 	text-decoration: none;
 	color: black;
+
+	/* make the whole li clickable and not only the site name*/
+	height: 100%;
+	width: 100%;
+	display: block;
 }
 
 /* TABS */
